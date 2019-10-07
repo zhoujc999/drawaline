@@ -104,7 +104,7 @@ public class PairSessionManager
 
     private boolean readyToSetAnchor = false, partnerReadyToSetAnchor = false;
 
-    private static final long DISCOVERY_TIMEOUT = TimeUnit.SECONDS.toMillis(10);
+    private static final long DISCOVERY_TIMEOUT = TimeUnit.SECONDS.toMillis(60);
 
     private static final long PAIR_TIMEOUT = TimeUnit.SECONDS.toMillis(60);
 
@@ -150,7 +150,6 @@ public class PairSessionManager
         // Nearby requires an activity context to avoid showing notification errors in place of
         // dialog errors
         mMessagesClient = Nearby.getMessagesClient(activity);
-
         mMessageListener = new MessageListener() {
             @Override
             public void onFound(Message message) {
@@ -179,7 +178,6 @@ public class PairSessionManager
     }
 
     public void login(Activity activity) {
-
         FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
         if (currentUser != null) {
             Log.d(TAG, "onStart: user uid " + currentUser.getUid());
@@ -192,6 +190,7 @@ public class PairSessionManager
     boolean mLogInInProgress = false;
 
     void loginAnonymously(final Activity activity) {
+//        Log.e("Hello", "HERE!!");
         mLogInInProgress = true;
         mFirebaseAuth.signInAnonymously()
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
@@ -266,8 +265,21 @@ public class PairSessionManager
             }
 
             setupConnectionBroadcastReceiver();
+            RoomData roomData = new RoomData("-LqbhYPGewqP4N6ZrDHn", new Long("1570476802115"));
+            Log.e(TAG, "Found message: " + roomData.toString());
 
-            internalStartPairingSession(activity);
+            boolean joinNewRoom = mRoomDbManager.shouldJoinReceivedRoom(roomData);
+            if (joinNewRoom) {
+                // stop publishing our room and subscribing for others
+                stopRoomDiscovery();
+
+                // join their room
+                joinRoom(roomData);
+            }
+            // else {
+            // Wait for other user to join our room
+            //}
+//            internalStartPairingSession(activity);
         } else {
             if (mPairingStateChangeListener != null) {
                 mPairingStateChangeListener.onStateChange(PairView.PairState.OFFLINE);
@@ -290,12 +302,12 @@ public class PairSessionManager
                         mAnchorStateListener.onConnectivityLostLeftRoom();
                     }
                 } else {
-                    Log.d(TAG, "setupConnectionBroadcastReceiver: ONLINE");
+                    Log.e(TAG, "setupConnectionBroadcastReceiver: ONLINE");
                 }
             }
         };
 
-        Log.d(TAG, "setupConnectionBroadcastReceiver: SET LISTENER");
+        Log.e(TAG,"setupConnectionBroadcastReceiver: SET LISTENER");
         App.get().registerReceiver(mConnectivityBroadcastReceiver, new IntentFilter(
                 ConnectivityManager.CONNECTIVITY_ACTION));
     }
@@ -311,7 +323,7 @@ public class PairSessionManager
         mMessagesClient.subscribe(mMessageListener);
 
         // create a room
-        createRoom(activity);
+//        createRoom(activity);
     }
 
 
@@ -371,7 +383,7 @@ public class PairSessionManager
      * Add user to room
      */
     private void joinRoom(final RoomData room) {
-        Log.d(TAG, "joinRoom: " + room.key);
+        Log.e(TAG, "joinRoom: " + room.key);
         // leave current room
         leaveRoom(false);
 
@@ -386,10 +398,13 @@ public class PairSessionManager
 
                     @Override
                     public void onNoPartnersDetected() {
-                        onPartnerLeft(true, 1);
+                        Log.e("Hello", "onNoPartnersDetected()!!");
+                        mAnchorStateListener.createAnchor();
+//                        onPartnerLeft(true, 1);
                     }
                 });
         if (mAnchorStateListener != null) {
+            Log.e("YAYYY", room.key);
             mAnchorStateListener.setRoomNumber(room.key);
         }
     }

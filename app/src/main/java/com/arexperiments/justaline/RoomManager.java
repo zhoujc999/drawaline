@@ -207,9 +207,10 @@ import java.util.Set;
         }
         isPairing = true;
 
-        Log.d(TAG, "Creating room");
+        Log.e(TAG, "Creating room");
         roomRef = roomsListRef.push();
-        Log.d(TAG, "room Created: " + roomRef.getKey());
+        Log.e(TAG, "room Created: " + roomRef.getKey());
+        Log.e(TAG,"Uid: " + uid);
 
         isRoomResolved = true;
         Long timestamp = System.currentTimeMillis();
@@ -223,6 +224,7 @@ import java.util.Set;
         listenForPartners(uid, partnerListener);
 
         mRoomData = new RoomData(roomRef.getKey(), timestamp);
+        Log.e("RoomData",mRoomData.toString());
         listener.onRoomCreated(mRoomData, null);
     }
 
@@ -322,6 +324,7 @@ import java.util.Set;
                 Log.d(TAG, "PARTICIPANTS onCancelled: ");
             }
         };
+
         partnersRef.addChildEventListener(partnersListener);
     }
 
@@ -553,6 +556,7 @@ import java.util.Set;
      */
     public boolean joinRoom(RoomData roomData, String uid, boolean isPairing,
                             PartnerListener partnerListener, PartnerDetectionListener partnerDetectionListener) {
+
         this.isPairing = isPairing;
         mRoomData = roomData;
 
@@ -567,7 +571,7 @@ import java.util.Set;
         }
 
         roomRef = roomsListRef.child(roomKey);
-        // Let originating user know that another user is here
+        // Let hosting user know that another user is here
         partnersRef = roomRef.child(KEY_PARTICIPANTS);
         Participant participant = new Participant(false, isPairing);
         partnersRef.child(uid).setValue(participant);

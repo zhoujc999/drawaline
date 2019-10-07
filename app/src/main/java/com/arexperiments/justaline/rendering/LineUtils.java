@@ -13,7 +13,7 @@
 // limitations under the License.
 
 package com.arexperiments.justaline.rendering;
-
+import android.util.Log;
 import android.opengl.Matrix;
 
 import com.arexperiments.justaline.AppSettings;
@@ -24,7 +24,7 @@ import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 
 
-public class LineUtils {
+public class  LineUtils {
 
     public static Vector3f GetWorldCoords(Vector2f touchPoint, float screenWidth,
                                           float screenHeight, float[] projectionMatrix, float[] viewMatrix) {
@@ -76,6 +76,7 @@ public class LineUtils {
      * Transform a vector3f FROM anchor coordinates TO world coordinates
      */
     public static Vector3f TransformPointFromPose(Vector3f point, Pose anchorPose) {
+        Log.e("HELLO",anchorPose.toString());
         float[] position = new float[3];
         position[0] = point.x;
         position[1] = point.y;
@@ -89,6 +90,7 @@ public class LineUtils {
      * Transform a vector3f TO anchor coordinates FROM world coordinates
      */
     public static Vector3f TransformPointToPose(Vector3f point, Pose anchorPose) {
+        Log.e("HELLO", anchorPose.toString());
         // Recenter to anchor
         float[] position = new float[3];
         position[0] = point.x;

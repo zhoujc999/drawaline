@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import android.util.Log;
 
 import javax.vecmath.Vector3f;
 
@@ -86,7 +87,6 @@ public class Stroke {
                 biquadFilter.update(point);
             }
         }
-
         // Filter the point
         point = biquadFilter.update(point);
 

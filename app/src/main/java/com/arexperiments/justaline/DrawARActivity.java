@@ -13,6 +13,7 @@
 // limitations under the License.
 
 package com.arexperiments.justaline;
+import java.util.Arrays;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -505,6 +506,7 @@ public class DrawARActivity extends BaseActivity
         for (int i = 0; i < touchPoint.length; i++) {
             newPoints[i] = LineUtils
                     .GetWorldCoords(touchPoint[i], mScreenWidth, mScreenHeight, projmtx, viewmtx);
+            Log.e("HELLO", Arrays.toString(viewmtx));
         }
 
         addPoint3f(newPoints);
@@ -1251,7 +1253,6 @@ public class DrawARActivity extends BaseActivity
     @Override
     public void setAnchor(Anchor anchor) {
         mAnchor = anchor;
-
         for (Stroke stroke : mStrokes) {
             Log.d(TAG, "setAnchor: pushing line");
             stroke.offsetToPose(mAnchor.getPose());
@@ -1318,6 +1319,7 @@ public class DrawARActivity extends BaseActivity
 
                 try {
                     mAnchor = mSession.createAnchor(pose);
+                    Log.e("DrawARActivity",mAnchor.getPose().toString());
                 } catch (NotTrackingException e) {
                     Log.e(TAG, "Cannot create anchor when not tracking", e);
                     mTrackingIndicator.addListener(new TrackingIndicator.DisplayListener() {
@@ -1386,6 +1388,9 @@ public class DrawARActivity extends BaseActivity
     @Override
     public void setRoomNumber(String roomKey) {
         if (mDebugEnabled) {
+            if (roomKey != null) {
+                Log.e("DrawARActivity", roomKey);
+            }
             mDebugView.setRoomNumber(roomKey);
         }
     }

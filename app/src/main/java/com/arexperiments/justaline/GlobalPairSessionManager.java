@@ -73,6 +73,7 @@ public class GlobalPairSessionManager extends PairSessionManager
     }
 
     public void joinGlobalRoom(Activity activity) {
+//        Log.e("Hello", "HERE!!");
         if (mPairedOrPairing == NOT_PAIRED) {
             internalJoinGlobalRoom(activity);
         }

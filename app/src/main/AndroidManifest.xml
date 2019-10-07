@@ -34,8 +34,6 @@
     <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE"/>
     <!-- End Firebase -->
 
-    <uses-sdk android:minSdkVersion="24"/>
-
     <uses-feature android:name="android.hardware.camera.ar" android:required="true"/>
 
     <application
@@ -86,7 +84,7 @@
         <meta-data android:name="com.google.ar.core" android:value="required"/>
         <meta-data
                 android:name="com.google.android.ar.API_KEY"
-                android:value="@string/ApiKey"/>
+                android:value="AIzaSyChyaV2P-u_L5nnGhwBNwYR8tTX0TyF4Es"/>
         <meta-data
                 android:name="com.google.android.nearby.messages.API_KEY"
                 android:value="@string/ApiKey" />

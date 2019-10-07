@@ -69,4 +69,9 @@ public class RoomData {
             super(message);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Key: " + key + "; Timestamp: " + timestamp.toString() + "; Message: " + message.toString();
+    }
 }

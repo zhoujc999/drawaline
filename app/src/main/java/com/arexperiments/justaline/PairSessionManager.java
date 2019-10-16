@@ -265,7 +265,7 @@ public class PairSessionManager
             }
 
             setupConnectionBroadcastReceiver();
-            RoomData roomData = new RoomData("-LqbhYPGewqP4N6ZrDHn", new Long("1570476802115"));
+            RoomData roomData = new RoomData("-LpK9nhPLip4V4Eawncn", new Long("1569091958856"));
             Log.e(TAG, "Found message: " + roomData.toString());
 
             boolean joinNewRoom = mRoomDbManager.shouldJoinReceivedRoom(roomData);
@@ -323,7 +323,7 @@ public class PairSessionManager
         mMessagesClient.subscribe(mMessageListener);
 
         // create a room
-//        createRoom(activity);
+        createRoom(activity);
     }
 
 
@@ -399,12 +399,11 @@ public class PairSessionManager
                     @Override
                     public void onNoPartnersDetected() {
                         Log.e("Hello", "onNoPartnersDetected()!!");
-                        mAnchorStateListener.createAnchor();
 //                        onPartnerLeft(true, 1);
                     }
                 });
         if (mAnchorStateListener != null) {
-            Log.e("YAYYY", room.key);
+            Log.e("YAYYY Joined Room", room.key);
             mAnchorStateListener.setRoomNumber(room.key);
         }
     }
@@ -507,7 +506,7 @@ public class PairSessionManager
                         public void onAnchorHosted(Anchor anchor, final String anchorId,
                                                    final Anchor.CloudAnchorState state) {
                             if (isPairedOrPairing() && mPartnerInFlow) {
-                                if (Anchor.CloudAnchorState.SUCCESS != state) {
+                                if (state != Anchor.CloudAnchorState.SUCCESS) {
 //                                                showMessage("Anchor hosting failed: " + status);
                                     Log.d(TAG, "onAnchorHosted: NOT hosted " + anchorId
                                             + " " + state.toString());
@@ -527,7 +526,7 @@ public class PairSessionManager
                                             AnalyticsEvents.PARAM_PAIR_ERROR_SYNC_REASON,
                                             state == null ? null : state.toString());
                                 } else {
-                                    Log.d(TAG, "onAnchorHosted: HOSTED" + anchorId + " "
+                                    Log.e(TAG, "onAnchorHosted: HOSTED" + anchorId + " "
                                             + state.toString());
                                     mAnchorId = anchorId;
                                     mRoomDbManager.setAnchorId(mUserUid, anchorId);

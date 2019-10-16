@@ -506,7 +506,7 @@ public class DrawARActivity extends BaseActivity
         for (int i = 0; i < touchPoint.length; i++) {
             newPoints[i] = LineUtils
                     .GetWorldCoords(touchPoint[i], mScreenWidth, mScreenHeight, projmtx, viewmtx);
-            Log.e("HELLO", Arrays.toString(viewmtx));
+//            Log.e("HELLO", Arrays.toString(viewmtx));
         }
 
         addPoint3f(newPoints);
@@ -1316,10 +1316,13 @@ public class DrawARActivity extends BaseActivity
             @Override
             public void run() {
                 Pose pose = mFrame.getCamera().getPose();
+                Pose pose2 = mFrame.getAndroidSensorPose();
 
                 try {
                     mAnchor = mSession.createAnchor(pose);
-                    Log.e("DrawARActivity",mAnchor.getPose().toString());
+                    Log.e("DrawARActivity.createAnchor()1", mAnchor.getPose().toString());
+                    Log.e("DrawARActivity.createAnchor()2", pose.toString());
+                    Log.e("DrawARActivity.createAnchor()3", pose2.toString());
                 } catch (NotTrackingException e) {
                     Log.e(TAG, "Cannot create anchor when not tracking", e);
                     mTrackingIndicator.addListener(new TrackingIndicator.DisplayListener() {
@@ -1388,9 +1391,6 @@ public class DrawARActivity extends BaseActivity
     @Override
     public void setRoomNumber(String roomKey) {
         if (mDebugEnabled) {
-            if (roomKey != null) {
-                Log.e("DrawARActivity", roomKey);
-            }
             mDebugView.setRoomNumber(roomKey);
         }
     }
